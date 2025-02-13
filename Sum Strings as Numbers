@@ -1,0 +1,48 @@
+import java.util.List;
+import java.util.Arrays;
+import java.util.Collections;
+
+public class Kata {
+  public static String sumStrings(String a, String b) {
+    
+       int sizeA =  a.length();
+       int sizeB =  b.length();
+
+       int sizeOp = Math.max(sizeA, sizeB);
+
+       StringBuffer total = new StringBuffer (sizeOp+1);
+
+       int carry = 0;
+       int i;
+
+       for(i = 1;i<=sizeOp; i++) {
+          int intA=0;
+          int intB=0;
+          
+          if (sizeA-i>= 0){
+              intA = Integer.parseInt (String.valueOf(a.charAt(sizeA-i)));
+          };
+         
+          if (sizeB-i>= 0){
+             intB = Integer.parseInt (String.valueOf(b.charAt(sizeB-i)));
+          };
+         
+          int sum = intA+intB+carry;  
+          carry=sum/10;    
+          total.append(sum-carry*10);
+        }
+    
+        if (carry==1){
+            total.append("1");
+        }
+            
+        total.reverse();
+    
+        while (total.charAt(0)=='0'){
+          total.deleteCharAt(0);
+        }
+
+    
+    return total.toString();
+  }
+}
