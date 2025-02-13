@@ -1,0 +1,71 @@
+import java.util.regex.Pattern;
+import java.util.regex.Matcher;
+
+public class Parser {    
+    public static int parseInt(String numStr) {      
+ 
+      Pattern  patt = Pattern.compile(
+              "(million|thousand|hundred|zero|one|two|three|four|five|six|seven|eighteen|eighty|eight|nine|ten|"+
+              "eleven|twelve|thir|for|fif|twen)(teen|ty)*", Pattern.CASE_INSENSITIVE);
+       
+        Matcher match = patt.matcher(numStr);
+  
+        int n  = 0;   //units class
+        int t  = 0;   //thousands class
+      
+        while (match.find()){
+        
+                String strD = match.group();
+                System.out.println(strD);
+          
+                switch (strD){
+                    case "hundred" : n = (n==0)? 100 : n*100;
+                    break;
+                    case "thousand" : {t = n*1000;
+                                       n=0;};
+                    break;
+                    case "million" : return 1000000;
+                    default: n+= parsint(strD);
+                }
+        }       
+      return t+n;
+    } 
+    
+//--------------------------------------------------------
+ public static int parsint (String extense){
+ 
+   return   switch(extense){
+              case "zero" -> 0;   
+              case "one"  -> 1; 
+              case "two"  -> 2;     
+              case "three"-> 3;
+              case "four" -> 4;   
+              case "five" -> 5; 
+              case "six"  -> 6;     
+              case "seven"-> 7;
+              case "eight"-> 8;
+              case "nine" -> 9;   
+              case "ten"      -> 10; 
+              case "eleven"   -> 11;     
+              case "twelve"   -> 12;
+              case "thirteen" -> 13;
+              case "fourteen" -> 14;   
+              case "fifteen"  -> 15; 
+              case "sixteen"  -> 16;     
+              case "seventeen"-> 17;
+              case "eighteen" -> 18;
+              case "nineteen" -> 19; 
+              case "twenty"   -> 20;     
+              case "thirty"   -> 30;
+              case "forty"    -> 40;   
+              case "fifty"    -> 50; 
+              case "sixty"    -> 60;     
+              case "seventy"  -> 70;
+              case "eighty"   -> 80;
+              case "ninety"   -> 90; 
+              case "hundred"  -> 100;
+              case "thousand" -> 1000; 
+              default         -> 0;  
+      };
+   } 
+}      
