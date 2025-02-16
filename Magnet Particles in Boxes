@@ -1,0 +1,25 @@
+class Magnets {
+    
+    public static double doubles(int maxk, int maxn) {
+
+        double sum = 0.0;
+      
+        for(int i = 1;i<=maxk; i++){          
+            for(int j = 1;j<=maxn; j++)  {
+              
+              double k = (double) i;
+              double n = (double) j;              
+              double aux = k*Math.pow((n+1), 2.0*k );
+              
+              if (aux < Double.MAX_VALUE){
+                  sum+= 1.0/aux;
+              }
+              else {
+                i=maxk;
+                j=maxn;
+              }
+            }  
+          } 
+      return sum;
+    }
+}
