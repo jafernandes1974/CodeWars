@@ -1,0 +1,27 @@
+import java.util.*;
+
+public class Prime {
+  public static boolean isPrime(int num) {    
+    
+    List<Integer> primes = new ArrayList<>(Arrays.asList(2,3,5,7,11,13,17,19,23,29,31));
+    
+    if (num <=36){return (primes.contains(num));}
+    
+        int i   = 0;
+        int p   = 2;
+        int m30 =0;
+    
+        while (p*p<= num){
+           if (num%p==0) {return false;}
+
+           if (i<10) {i++;
+           }else{
+             i-=7;
+             m30+=30;
+           }            
+           p = primes.get(i) + m30;
+           }  
+    
+        return true;     
+    }        
+ }
