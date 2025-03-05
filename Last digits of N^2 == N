@@ -1,0 +1,87 @@
+import java.math.BigInteger;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.stream.Collectors;
+import java.util.Set;
+import java.util.TreeSet;
+import java.util.Comparator;
+
+public class GreenNumbers {
+   
+        final static BigInteger M_ONE  = new BigInteger("-1");
+        final static BigInteger ZERO   = BigInteger.ZERO;
+        final static BigInteger ONE    = BigInteger.ONE;
+        final static BigInteger FIVE   = new BigInteger("5");
+        final static BigInteger SIX    = new BigInteger("6");
+        final static BigInteger TEN    = BigInteger.TEN;      
+              static TreeSet<BigInteger>  set = new TreeSet<BigInteger>();
+       
+    
+    public static BigInteger get(int n) {
+      
+        BigInteger bigK5     = FIVE;
+        BigInteger bigK6     = SIX;
+        BigInteger bigPow10  = ONE;
+                 
+        set.add(ZERO);
+        set.add(ONE);
+        set.add(FIVE);
+        set.add(SIX);  
+        
+        int nth        = 0;
+        int position   = 2;
+        while (nth<n){
+      // Calculations for numbers ended in 5
+        bigK5 = newBig(bigK5, position,5); 
+        set.add(bigK5);        
+    // Calculations for numbers ended in 6 
+        bigK6 = newBig(bigK6, position,6); 
+        set.add(bigK6); 
+
+        position++; 
+          
+        if (position>10){
+           //   System.out.println(set.first());
+            set.pollFirst();
+              //  System.out.println(" -> "+nth);
+            nth++;
+        }
+
+    } 
+
+    //  System.out.println(set.first());
+        return set.first();
+
+  }
+        
+  public static BigInteger newBig (BigInteger bigK, int position, int type){
+      BigInteger bigKmod = bigK.mod(TEN.pow(position));
+      BigInteger bigSquare    = bigKmod.multiply(bigKmod);   
+      String bigStringSq = bigSquare.toString();
+      int length = bigStringSq.length();
+  
+    //  System.out.println("*"+ (length-position) +"->" +bigStringSq);
+    
+      if (type== 6){
+        
+           int digit = ':'- bigStringSq.charAt(length-position);
+       //    System.out.println("+"+ (length-position) +"->" +digit);
+           StringBuilder  result = new StringBuilder();
+           
+           if (digit == 10){
+              return bigK;
+           }
+              
+           result = result.append(digit).append(bigStringSq.substring(length-position+1, length));
+           
+           
+           // System.out.println(""+new BigInteger(result.toString())+"\n");
+           return new BigInteger (result.toString());
+        
+        }   
+   //     System.out.println(""+(bigStringSq.substring(length-position, length)+"\n"));
+        return new BigInteger (bigStringSq.substring(length-position, length));
+  }
+}
