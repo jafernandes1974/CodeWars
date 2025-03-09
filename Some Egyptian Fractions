@@ -1,0 +1,60 @@
+import java.util.List;
+import java.util.ArrayList;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.math.MathContext;
+
+class Decomp {
+  
+  public static String decompose(String nrStr, String drStr) {    
+      long    num    = Integer.valueOf(nrStr);
+      long    den    = Integer.valueOf(drStr);
+      long    integ  = 0;  
+    
+      if (num==0){return "[]";}     
+    
+      List<Long> list = new ArrayList<>();
+       
+      integ =  Math.floorDiv(num, den);
+      list.add(integ);
+    
+      num = num-den*integ;     
+
+      if (num==0){return printEgyptian(list);}
+    
+      int j = 1;
+    
+      while (j<10 && den<Long.MAX_VALUE){
+          j++;
+          if (den%num==0){
+              list.add(den/num);
+              return printEgyptian(list);  
+          }
+          else{
+            long newDen = 1L+den/num;
+            list.add(newDen);
+
+            num = num*newDen-den;
+            den *= newDen;  
+          }
+    }
+      return printEgyptian(list);    
+  }  
+//---------------------------------------------------     
+  public static String printEgyptian (List<Long> list){
+      StringBuilder res = new  StringBuilder("[");
+      String sep        = "";
+    
+      if (list.get(0)!=0){
+          res.append(list.get(0));
+          sep = (list.size()==1)? "]":", ";
+          res.append(sep);
+      }
+    
+      for (int i=1; i<list.size();i++){
+            sep = (i==list.size()-1)? "]":", ";        
+            res.append("1/").append(list.get(i)).append(sep);
+      }
+      return res.toString();    
+   }
+}
