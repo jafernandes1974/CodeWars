@@ -1,8 +1,0 @@
-public class Kata{
-  public static int countSquareable(int n){
-    
-    int res = n-(n+2)/4;
-    
-    return res;
-  }
-}
