@@ -1,0 +1,91 @@
+mport  java.util.Comparator;
+import  java.util.TreeMap;
+
+public class TimeFormatter {
+  
+    public static final String SEC    = "second";
+    public static final String MIN    = "minute";
+    public static final String HOUR   = "hour";  
+    public static final String DAY    = "day";
+    public static final String YEAR   = "year";
+  
+    public static TreeMap<String,Integer> tree 
+           =  new TreeMap(new TimeComparator()); 
+    
+    public static  int sec;
+    public static  int min;
+    public static  int hour;  
+    public static  int day;
+    public static  int year;
+    public static  int time;
+    
+    public static String formatDuration(int seconds) {
+        time = seconds;
+      
+        sec   = time%60;
+        time /= 60;
+        if (sec != 0){
+            tree.put(SEC,sec);
+        }
+      
+        min   = time%60;
+        time /= 60;
+        if (min != 0){
+            tree.put(MIN, min);
+        }
+      
+        hour  = time%24;
+        time /= 24;
+        if (hour != 0){
+            tree.put(HOUR, hour);
+        }
+        day   = time%365;
+        if (day != 0){
+            tree.put(DAY, day);
+        }
+        year  = time/365;
+        if (year != 0){
+            tree.put(YEAR, year);
+        }
+
+        return writeTime();   
+    }
+  
+   public static String writeTime (){
+        String key    = new String();
+        String result = new String("");
+     
+        String [] separators = {"",  "", " and ", ", ", ", ", ", ", ", "};
+   
+        if (tree.isEmpty()) {return "now";}
+  
+        while (tree.size()>0){ 
+          result+= printEntry(result, separators[tree.size()]);
+        }
+         
+        return result;
+      }
+  
+      public static String printEntry (String result, String sep){
+              
+          String key     = tree.firstKey();
+          Integer value  = tree.get(key);
+          tree.pollFirstEntry();
+        
+          key = (value>=2)? key + "s": key;
+  
+          return value+ " "+key +sep; 
+      }
+  }
+ 
+ class  TimeComparator implements Comparator<String>{
+    
+      public int compare (String s1, String s2){
+        
+        if(s1.equals("year")) {s1="aaa";}
+        
+        if(s2.equals("year")) {s2="aaa";}
+      
+        return s1.compareTo(s2);        
+      }
+  }
