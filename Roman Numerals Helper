@@ -1,0 +1,77 @@
+public class RomanNumerals {
+ 
+  public static String toRoman(int n) {
+        
+        int  thous = n/1000;
+        int  hunds = (n/100)%10;
+        int  tens  = (n/10)%10;
+        int  ones  = n%10;
+    
+        return numerals(thous,"M","","")+
+               numerals(hunds,"C","D","M")+
+               numerals(tens, "X","L","C")+    
+               numerals(ones, "I","V","X");    
+  }
+  
+  public static String numerals (int digit, String one, String five, String ten ){
+    
+      switch (digit) {        
+          case	0	: 	return	"";
+          case	1	: 	return	one;
+          case	2	: 	return	one + one;
+          case	3	: 	return	one + one +one;
+          case	4	: 	return	one + five;
+          case	5	: 	return	five;
+          case	6	: 	return	five + one;
+          case	7	: 	return	five + one +one;
+          case	8	: 	return	five + one +one +one;
+          case	9	: 	return	one+ten;
+          default :   return	"error"; 
+       }   
+   }       
+          
+  public static int fromRoman(String romanNumeral) {
+    
+      String romanN = romanNumeral.replace("IV","4")
+                                  .replace("IX","9")
+                                  .replace("XL","A")
+                                  .replace("XC","B")
+                                  .replace("CD","E")
+                                  .replace("CM","F");
+
+      int result = 0;
+    
+      for(int i= 0; i<romanN.length(); i++){
+            switch(romanN.charAt(i)){
+                  case	'I'	: 	result	+=	1;
+                  break;						
+                  case	'V'	: 	result	+=	5;
+                  break;						
+                  case	'X'	: 	result	+=	10;
+                  break;						
+                  case	'L'	: 	result	+=	50;
+                  break;						
+                  case	'C'	: 	result	+=	100;
+                  break;						
+                  case	'D'	: 	result	+=	500;
+                  break;
+                  case	'M'	: 	result	+=	1000;
+                  break;
+                  case	'4'	: 	result	+=	4	;
+                  break;						
+                  case	'9'	: 	result	+=	9	;
+                  break;						
+                  case	'A'	: 	result	+=	40	;
+                  break;						
+                  case	'B'	: 	result	+=	90	;
+                  break;						
+                  case	'E'	: 	result	+=	400	;
+                  break;						
+                  case	'F'	: 	result	+=	900	;
+                  break;
+                  default   :   return  5347;  						
+            }      
+    }   
+    return result;
+  }
+}
