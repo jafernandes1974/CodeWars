@@ -1,0 +1,115 @@
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.StringJoiner;
+
+public class KataSolution {
+
+	public static String expand(String expr) { 
+
+      String result  = new String(); 
+
+      Pattern pattern0= Pattern.compile("\\((.+)\\)\\^(\\d+)"); // (base)^exponent
+      Matcher matcher  = pattern0.matcher(expr);
+
+      matcher.find();
+      String baseString     = matcher.group(1);
+      String exponentString = matcher.group(2);
+      
+      //if
+      if(exponentString.equals("0")) return "1";
+      if(exponentString.equals("1")) return baseString;
+      //if
+      
+      int exponent = Integer.valueOf(exponentString);
+    
+      Pattern pattern1= Pattern.compile("([\\-]?)(\\d{0,})([a-z])([\\+\\-])(\\d+)"); // (-3x+5)
+    
+      matcher  = pattern1.matcher(baseString);  
+     
+      if(matcher.find()){
+        
+          String fstSignStr = matcher.group(1);
+          String fstCoefStr = matcher.group(2);
+          String letter     = matcher.group(3);
+          String secSignStr = matcher.group(4);
+          String indepStr   = matcher.group(5);
+        
+          long fstSign       = (fstSignStr.equals("-"))? -1: +1;
+          long fstCoef       = (!fstCoefStr.equals(""))?  Integer.valueOf(fstCoefStr): 1;  
+          long secSign       = (secSignStr.equals("-"))? -1: +1;  
+          long indep         = Long.valueOf(indepStr);  
+               
+          List<Long> newton       = new ArrayList<>(); 
+          List<Long> powerFstCoef = new ArrayList<>();  
+          List<Long> powerIndep   = new ArrayList<>();
+
+          long choose =  1;
+          newton.add(choose);
+        
+          for (int i = 1 ; i<=exponent; i++){  
+              choose*=(exponent+1-i);
+              choose/=i;
+              newton.add(choose);
+          }  
+        
+          powerFstCoef.add(1L);  
+          powerIndep  .add(1L);
+
+          for (int i =1;i<=exponent; i++){
+              powerFstCoef.add(fstSign * fstCoef * powerFstCoef.get(i-1));
+              powerIndep  .add(secSign * indep   * powerIndep  .get(i-1));   
+          }
+                           
+          List<Long> joinPar = new ArrayList<>(); 
+        
+     
+          for (int i =0;i<=exponent; i++){
+              joinPar.add(powerFstCoef.get(exponent-i)*
+                                    powerIndep  .get(i)*
+                                    newton      .get(i));
+             }  
+        
+          joinPar.add(powerIndep .get(exponent));
+              
+          for (int i = 0; i<=exponent;i++){
+
+              long number = joinPar.get(i);
+              String numberString = new String();
+
+              if (number<-1){
+                numberString = "-" + Math.abs(number);
+              }     
+              else if (number>1){
+                numberString = (i==0)? "" + number: "+" + number;
+              }
+              else if (number==-1){
+                numberString =  (i != exponent)? "-": "-1";
+              }
+              else if (number==1){
+                    if (i == 0){ 
+                        numberString = "";
+                    }
+                    else if (i == exponent){
+                        numberString = "+1";  
+                    }
+                    else{
+                        numberString = "+";
+                    }  
+              }  
+ 
+              String expoString      =  (exponent==i+1)? ""           : "^"+(exponent-i);  
+                       
+              if (number !=0){
+                  result+= (i!=exponent)? numberString + letter + expoString: numberString;  
+              }                  
+      } 
+      return result;       
+	    }
+      else{
+            System.out.println("regex error");
+            return "0";
+      }
+   } 
+}
