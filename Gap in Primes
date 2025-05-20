@@ -1,0 +1,71 @@
+import java.util.Arrays;
+import java.util.List;
+
+class GapInPrimes {
+
+    public static Long[] gap(int g, long m, long n) {
+      
+//special case m = 1 -> only if contains 2 and 3
+      
+      if (g==1 && m<=2 && n>=3) {return new Long[] {Long.valueOf(2),Long.valueOf(3)};} 
+            
+//remaining cases with g odd are not possible
+      
+      if(g%2==1) {return null;}    
+      
+//special case-> contains g = 2 ->{3,5,7}; 
+      if (g==2 && m<=3 && n>=5) {return new Long[] {Long.valueOf(3),Long.valueOf(5)};} 
+      if (g==2 && m<=5 && n>=7) {return new Long[] {Long.valueOf(5),Long.valueOf(7)};} 
+      
+      Long p1= (Prime.isPrime(m))? m: nextPrime(m);
+      Long p2 = p1;
+
+      while (p2<=n){
+          p2=nextPrime(p1);
+
+          if (p2-p1 == g && p2<=n){
+                return new Long[] {Long.valueOf(p1),Long.valueOf(p2)};
+          }
+          else{
+             p1=p2;
+          }
+      }
+        return null;
+    }  
+   
+  //--------------------------------------------------------------------
+      public static long nextPrime (long t){
+                   
+         long u = t+1+t%2;
+        
+         while (!Prime.isPrime(u)){
+                  u=nextPrime(u);
+          }       
+          return u;
+      }            
+}  
+//--------------------------------------------------------------------
+class Prime {      
+     
+   public static boolean isPrime(long num) {
+      
+      if (num<=5) {return (num!=1 && num!=4);}       
+     
+      if (num%(2)==0L || num%(3)==0L || num%(5)==0L){return false;}
+          
+      if (num<49) {return true;}        
+
+      long a  = 7L;
+      long b  = 11L;
+     
+      boolean isprime = true;
+
+      while(a*a<=num && isprime){
+          isprime = (num%(a)!=0L && num%(b)!=0L);
+        
+          a+=6L;
+          b+=6L;
+      }  
+      return isprime;
+  }
+}           
